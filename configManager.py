@@ -18,3 +18,4 @@ class ConfigManager:
         self.config['UserConfig'] = arg
         with open('config.ini', 'w+') as configfile:
             self.config.write(configfile)
+
