@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit ,QMessageBox ,QLineEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit ,QMessageBox ,QLineEdit ,QFileDialog
 from PyQt5 import uic
 import sys
 from PyQt5.QtCore import QSettings 
@@ -32,7 +32,9 @@ class MyApp(QMainWindow):
         self.button_Apply.clicked.connect(self.onApply)
         self.button_reset = self.findChild(QPushButton,"pushButton_Reset")
         self.button_reset.clicked.connect(self.onReset)
-    
+        self.button_Browse = self.findChild(QPushButton,"pushButton_Browse")
+        self.button_Browse.clicked.connect(self.change_cookie_directory)
+
     def updateconfig(self):
         #####
         #Loads userconfig from file if it is available 
@@ -56,6 +58,7 @@ class MyApp(QMainWindow):
         self.configManager.setUserconfig(d)
         self.updateconfig()
 
+
     def onReset(self):
         '''
         deletes user config and resets it to default
@@ -63,7 +66,15 @@ class MyApp(QMainWindow):
         self.configManager.resetConfig()
         self.updateconfig()
 
-        
+    def change_cookie_directory(self):
+        try:
+            self.folder = str(QFileDialog.getExistingDirectory(None, "Select Directory",self.lineEdit_cookieDirectory.text()))
+        except:
+            self.folder = str(QFileDialog.getExistingDirectory(None, "Select Directory","c:/Users/"))
+        print(self.folder)
+        self.lineEdit_cookieDirectory = self.findChild(QLineEdit,"lineEdit_cookieDirectory")
+        self.lineEdit_cookieDirectory.setText(self.folder)
+        self.cookie_directory = self.folder
 
 
     def closeEvent(self,event):
