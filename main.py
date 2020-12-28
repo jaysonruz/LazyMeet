@@ -6,9 +6,13 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import * 
 import sys 
 
+from threading import Thread
+import time
 from backports import configparser
 
 from configManager import ConfigManager
+from timeCalc import TimeCalc
+from googleMeetBot import meet_bot
 #----------------------------------------------------------
 class MyApp(QMainWindow):
     def __init__(self):
@@ -18,7 +22,10 @@ class MyApp(QMainWindow):
         self.settings = QSettings('LazyMeet','App state')
         self.configManager = ConfigManager()
         self.config = configparser.ConfigParser()
-        
+        self.lcd = self.findChild(QLCDNumber,"lcdNumber")
+        self.Timecalc = TimeCalc()
+        t = Thread(target=self._countdown)
+        t.start()
         try:
             ####
             #loads application previous state like size n position 
@@ -37,7 +44,39 @@ class MyApp(QMainWindow):
         self.button_reset.clicked.connect(self.onReset)
         self.button_Browse = self.findChild(QPushButton,"pushButton_Browse")
         self.button_Browse.clicked.connect(self.change_cookie_directory)
+        self.button_start = self.findChild(QPushButton,"pushButton_Start")
+        self.button_start.clicked.connect(self.start)
+        self.button_stop = self.findChild(QPushButton,"pushButton_Stop")
+        self.button_stop.clicked.connect(self.stop)
+        self.button_test = self.findChild(QPushButton,"pushButton_TEST")
+        self.button_test.clicked.connect(self.test)
+    
+    def _countdown(self):
+         x = self.Timecalc.deltaTime()[1]
+         for i in range(x):
+             time.sleep(1)
+             self.lcd.display(self.Timecalc.deltaTime()[0])
 
+    def start(self):
+        """
+        docstring
+        """
+        self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
+        self.obj.login()
+    def stop(self):
+        """
+        docstring
+        """
+        self.obj.logout()
+          
+    def test(self):
+        """
+        docstring
+        """
+        self.start()
+        time.sleep(30)
+        self.stop()
+        pass    
 
     def dateToQdate(self,_date):
         '''
@@ -69,6 +108,9 @@ class MyApp(QMainWindow):
         self.DateEdit.setDate(self.dateToQdate(self.config["UserConfig"]['date']))
         self.timeEdit_Start.setTime(self.timeTOQtime(self.config["UserConfig"]['starttime']))
         self.timeEdit_End.setTime(self.timeTOQtime(self.config["UserConfig"]['endtime']))
+        #---update variables 
+        self.cookie_directory = self.config["UserConfig"]['cookiedirectory']
+        self.meeting_directory = self.config["UserConfig"]['googlemeetlink']
 
     def onApply(self):
         '''
