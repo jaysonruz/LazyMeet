@@ -1,5 +1,4 @@
 from backports import configparser
-from timeCalc import TimeCalc
 from datetime import datetime
 
 class ConfigManager:

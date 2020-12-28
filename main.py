@@ -6,12 +6,11 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import * 
 import sys 
 
-from threading import Thread
+from threading import Thread , Condition# ---- threading
 import time
 from backports import configparser
 
 from configManager import ConfigManager
-# from timeCalc import TimeCalc
 from googleMeetBot import meet_bot
 #----------------------------------------------------------
 class MyApp(QMainWindow):
@@ -24,10 +23,9 @@ class MyApp(QMainWindow):
         self.configManager = ConfigManager()
         self.config = configparser.ConfigParser()
         self.timeLabel = self.findChild(QLabel,"timelabel")
-        # self.Timecalc = TimeCalc()
 
-        self.stop_threads = False 
-
+        self.stop_threads = False  # ---- threading
+        self.thread_condition = Condition()
         try:
             ####
             #loads application previous state like size n position 
@@ -77,6 +75,7 @@ class MyApp(QMainWindow):
                     self.obj.login()
 
                     for j in range(y,0,-1):
+                        print("starting meeting timer")
                         time.sleep(1)
                         self.timeLabel.setText(str(j))
                         if j == 1:
@@ -85,31 +84,32 @@ class MyApp(QMainWindow):
                 break
 
 
-    # def restart_thread(self):
-    #     self.stop_threads = True
-    #     self.t.join()
-    #     time.sleep(2)
-    #     self.stop_threads = False
-    #     self.t = Thread(target=self._countdown,args =(lambda : self.stop_threads, ))
-    #     self.t.start()
 
     def start(self):
         """
         docstring
         """
-        self.t = Thread(target=self._countdown,args =(lambda : self.stop_threads, ))
-        self.t.start()
+        self.t = Thread(target=self._countdown,args =(lambda : self.stop_threads, )) # ---- threading
+        self.t.start() # ---- threading
 
     def stop(self):
         """
         docstring
         """
+        #TODO here rather then stoping the thread we want to pause the thread instead and kill the thread only when we kill the application 
+
+        # self.stop_threads = True
+        
+        # self.t.join()
+        print("acquiring lock...")
+        self.thread_condition.acquire()
         try:
-            self.stop_threads = True
-            
-            self.t.join()
-        except:
-            pass
+            self.thread_condition.wait(15)
+            print("waiting")
+        # finally:
+        #     self.thread_condition.release()
+        ##
+        # logs out
         try:
             self.obj.logout()
             self.timeLabel.setText('welcome to LazyMeet')
@@ -120,8 +120,9 @@ class MyApp(QMainWindow):
         """
         docstring
         """
-        self.start()
-        time.sleep(30)
+        self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
+        self.obj.login()
+        time.sleep(2)
         self.stop()
         pass    
 
