@@ -18,14 +18,16 @@ class MyApp(QMainWindow):
     def __init__(self):
         super(MyApp, self).__init__()
         uic.loadUi("gui.ui", self)
-        #-------------------------------------------------------------------       
+        #-------------------------------------------------------------------  
+            
         self.settings = QSettings('LazyMeet','App state')
         self.configManager = ConfigManager()
         self.config = configparser.ConfigParser()
-        self.lcd = self.findChild(QLCDNumber,"lcdNumber")
+        self.timeLabel = self.findChild(QLabel,"timelabel")
         self.Timecalc = TimeCalc()
-        t = Thread(target=self._countdown)
-        t.start()
+
+        self.stop_threads = False 
+
         try:
             ####
             #loads application previous state like size n position 
@@ -51,23 +53,63 @@ class MyApp(QMainWindow):
         self.button_test = self.findChild(QPushButton,"pushButton_TEST")
         self.button_test.clicked.connect(self.test)
     
-    def _countdown(self):
-         x = self.Timecalc.deltaTime()[1]
-         for i in range(x):
-             time.sleep(1)
-             self.lcd.display(self.Timecalc.deltaTime()[0])
+    def _countdown(self,stop):
+        print("debug: function running")
+
+        x = self.Timecalc.deltaTime()[1]
+        y = self.Timecalc.deltaMeetingTime()
+        for i in range(x,0,-1):
+            print("starting countdown")
+            print(i)
+            time.sleep(1)
+            self.timeLabel.setText(self.Timecalc.deltaTime()[0])
+            if i < 60:
+                self.timeLabel.setText(str(i))
+                if i == 1:
+                    print("starting meeting")
+                    self.timeLabel.setText("starting meeting")
+
+                    self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
+                    self.obj.login()
+
+                    for j in range(y,0,-1):
+                        time.sleep(1)
+                        self.timeLabel.setText(str(j))
+                        if j == 1:
+                            self.stop()
+            if stop(): 
+                break
+
+
+    # def restart_thread(self):
+    #     self.stop_threads = True
+    #     self.t.join()
+    #     time.sleep(2)
+    #     self.stop_threads = False
+    #     self.t = Thread(target=self._countdown,args =(lambda : self.stop_threads, ))
+    #     self.t.start()
 
     def start(self):
         """
         docstring
         """
-        self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
-        self.obj.login()
+        self.t = Thread(target=self._countdown,args =(lambda : self.stop_threads, ))
+        self.t.start()
+
     def stop(self):
         """
         docstring
         """
-        self.obj.logout()
+        try:
+            self.stop_threads = True
+            self.t.join()
+        except:
+            pass
+        try:
+            self.obj.logout()
+            self.timeLabel.setText('welcome to LazyMeet')
+        except:
+            pass
           
     def test(self):
         """
@@ -110,7 +152,7 @@ class MyApp(QMainWindow):
         self.timeEdit_End.setTime(self.timeTOQtime(self.config["UserConfig"]['endtime']))
         #---update variables 
         self.cookie_directory = self.config["UserConfig"]['cookiedirectory']
-        self.meeting_directory = self.config["UserConfig"]['googlemeetlink']
+        self.meeting_link= self.config["UserConfig"]['googlemeetlink']
 
     def onApply(self):
         '''
@@ -121,6 +163,7 @@ class MyApp(QMainWindow):
         self.configManager.setUserconfig(d)
         self.updateconfig()
         self.pushButton_Apply.setText('Applied')
+        
 
     def onReset(self):
         '''
@@ -159,7 +202,13 @@ class MyApp(QMainWindow):
             event.ignore()
         self.settings.setValue("window size", self.size())
         self.settings.setValue("window position", self.pos())
-        
+        #stops the active thread 
+        try:
+            self.stop_threads = True
+            self.t.join()
+        except:
+            pass
+
  
 
  

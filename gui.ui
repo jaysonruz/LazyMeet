@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>395</height>
+    <width>362</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,24 +20,22 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>Home</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton_Start">
-          <property name="text">
-           <string>Start</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="1">
          <widget class="QPushButton" name="pushButton_TEST">
           <property name="toolTip">
@@ -69,6 +67,13 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pushButton_Start">
+          <property name="text">
+           <string>Start</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="pushButton_Stop">
           <property name="text">
@@ -77,7 +82,49 @@
          </widget>
         </item>
         <item row="0" column="0" colspan="2">
-         <widget class="QLCDNumber" name="lcdNumber"/>
+         <widget class="QLabel" name="timelabel">
+          <property name="font">
+           <font>
+            <family>Rockwell Condensed</family>
+            <pointsize>25</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::WinPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="text">
+           <string>Welcome to LazyMeet, your lazy solution to meetings</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="margin">
+           <number>2</number>
+          </property>
+          <property name="indent">
+           <number>-1</number>
+          </property>
+          <property name="openExternalLinks">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
