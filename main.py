@@ -11,7 +11,7 @@ import time
 from backports import configparser
 
 from configManager import ConfigManager
-from timeCalc import TimeCalc
+# from timeCalc import TimeCalc
 from googleMeetBot import meet_bot
 #----------------------------------------------------------
 class MyApp(QMainWindow):
@@ -24,7 +24,7 @@ class MyApp(QMainWindow):
         self.configManager = ConfigManager()
         self.config = configparser.ConfigParser()
         self.timeLabel = self.findChild(QLabel,"timelabel")
-        self.Timecalc = TimeCalc()
+        # self.Timecalc = TimeCalc()
 
         self.stop_threads = False 
 
@@ -56,13 +56,17 @@ class MyApp(QMainWindow):
     def _countdown(self,stop):
         print("debug: function running")
 
-        x = self.Timecalc.deltaTime()[1]
-        y = self.Timecalc.deltaMeetingTime()
+        x = int(self.config["timings"]["deltatime"])
+        y = int(self.config["timings"]["deltameetingtime"])
+        print(x,y)
+        if x < 0:
+            self.timeLabel.setText("Please check if date/time is set correctly.")
+
         for i in range(x,0,-1):
             print("starting countdown")
             print(i)
             time.sleep(1)
-            self.timeLabel.setText(self.Timecalc.deltaTime()[0])
+            self.timeLabel.setText(self.configManager.deltaTime()[0])
             if i < 60:
                 self.timeLabel.setText(str(i))
                 if i == 1:
@@ -102,6 +106,7 @@ class MyApp(QMainWindow):
         """
         try:
             self.stop_threads = True
+            
             self.t.join()
         except:
             pass
@@ -160,10 +165,11 @@ class MyApp(QMainWindow):
         '''
         d = {'CookieDirectory': self.lineEdit_cookieDirectory.text(),'GoogleMeetLink': self.lineEdit_meetingLink.text(),'Date':self.DateEdit.date().toPyDate(),
             'startTime':self.timeEdit_Start.time().toString(),'endTime':self.timeEdit_End.time().toString()}
-        self.configManager.setUserconfig(d)
-        self.updateconfig()
-        self.pushButton_Apply.setText('Applied')
         
+        self.configManager.setUserconfig(d)
+        self.configManager.setDeltaTime()
+        self.updateconfig()
+        self.pushButton_Apply.setText('Apply')
 
     def onReset(self):
         '''

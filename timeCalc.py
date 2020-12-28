@@ -1,11 +1,11 @@
 from datetime import datetime
-from backports import configparser
+
 
 
 class TimeCalc():
     def __init__ (self):
-        self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        pass
+        
     def startime(self):
         #meeting time
         str_time = self.config["UserConfig"]['starttime'].split(':')
@@ -46,6 +46,7 @@ class TimeCalc():
         b=self.stoptime()
 
         c=b-a
+        # print(c)
         return int(c.total_seconds())
 
     def days_hours_minutes(self,td):
