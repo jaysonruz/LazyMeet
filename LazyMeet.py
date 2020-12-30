@@ -78,13 +78,12 @@ class MyApp(QMainWindow):
 
         for i in range(x,0,-1):
             if self.go_on:
+                self.timeLabel.setText('welcome to LazyMeet')
                 break
             print("starting countdown")#                                                                              | starts countdown 
             print(i)
             time.sleep(1)
             self.timeLabel.setText("Time Remaining: "+str(i))
-            if self.go_on:
-                break
             if i < 60: #                                                                                              | about one minute remaining 
                 self.timeLabel.setText("Time Remaining: "+str(i)) 
                 if i == 1:#                                                                                           |  starts meeting 
@@ -96,10 +95,12 @@ class MyApp(QMainWindow):
                     self.obj.login()#                                                                                 |
                     #-------------------------------------------------------------------------------------------------|
                     if self.go_on:
+                        self.timeLabel.setText('welcome to LazyMeet')
                         break
                     #-------------------------------------------------------------------------------------------------|
                     for j in range(y,0,-1):# 
                         if self.go_on:
+                            self.timeLabel.setText('welcome to LazyMeet')
                             break                                                                            
                         print("running meeting timer")#                                                              
                         time.sleep(1)#                                                                                
@@ -111,22 +112,29 @@ class MyApp(QMainWindow):
 
 
     def start_worker(self):
+        try:
+            self.onApply()
+        except:
+            pass
         self.go_on = False
         self.worker = Worker(self.start_stream, )
         self.threadpool.start(self.worker)
 
     def stop_worker(self):
+        
         self.go_on=True
         with self.q.mutex:
             self.q.queue.clear()
-            self.timeLabel.setText('welcome to LazyMeet')
+
+          
         try:
             self.obj.logout()
             
         except Exception as e:
             print("ERROR: ",e)
             pass
-		#self.timer.stop()
+        
+        
 
     def start_stream(self):
             
