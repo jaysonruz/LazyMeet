@@ -5,6 +5,7 @@ from PyQt5 import uic
 from PyQt5.QtGui import * 
 from PyQt5.QtCore import * 
 import sys 
+import queue
 
 from threading import Thread , Condition# ---- threading
 import time
@@ -18,7 +19,12 @@ class MyApp(QMainWindow):
         super(MyApp, self).__init__()
         uic.loadUi("gui.ui", self)
         #-------------------------------------------------------------------  
-            
+        
+        self.threadpool = QtCore.QThreadPool()	
+        self.threadpool.setMaxThreadCount(1)
+        self.q = queue.Queue(maxsize=20)
+
+        #--
         self.settings = QSettings('LazyMeet','App state')
         self.configManager = ConfigManager()
         self.config = configparser.ConfigParser()
@@ -44,70 +50,95 @@ class MyApp(QMainWindow):
         self.button_reset.clicked.connect(self.onReset)
         self.button_Browse = self.findChild(QPushButton,"pushButton_Browse")
         self.button_Browse.clicked.connect(self.change_cookie_directory)
+
         self.button_start = self.findChild(QPushButton,"pushButton_Start")
-        self.button_start.clicked.connect(self.start)
+        self.button_start.clicked.connect(self.start_worker)
+        
         self.button_stop = self.findChild(QPushButton,"pushButton_Stop")
-        self.button_stop.clicked.connect(self.stop)
+        self.button_stop.clicked.connect(self.stop_worker)
+        
         self.button_test = self.findChild(QPushButton,"pushButton_TEST")
         self.button_test.clicked.connect(self.test)
 
+        self.worker = None
+        self.go_on = False
+    ##-----------------------------------------------------------------------------------------------------------
 
-    def _countdown(self,stop):
-        print("debug: function running")
-
-        x = int(self.config["timings"]["deltatime"])
-        y = int(self.config["timings"]["deltameetingtime"])
+    def guiDisplay(self):
+        
+        # QtWidgets.QApplication.processEvents()	
+ 
+        y = self.meetingduration
+        x = self.timetilmeet
         print(x,y)
-        if x < 0:
+        if x < 0 or y < 0 :
             self.timeLabel.setText("Please check if date/time is set correctly.")
+            time.sleep(5)  
+            self.stop_worker()
 
         for i in range(x,0,-1):
-            print("starting countdown")
+            if self.go_on:
+                break
+            print("starting countdown")#                                                                              | starts countdown 
             print(i)
             time.sleep(1)
-            self.timeLabel.setText(self.configManager.deltaTime()[0])
-            if i < 60:
-                self.timeLabel.setText(str(i))
-                if i == 1:
+            self.timeLabel.setText("Time Remaining: "+str(i))
+            if self.go_on:
+                break
+            if i < 60: #                                                                                              | about one minute remaining 
+                self.timeLabel.setText("Time Remaining: "+str(i)) 
+                if i == 1:#                                                                                           |  starts meeting 
                     print("starting meeting")
                     self.timeLabel.setText("starting meeting")
 
-                    self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
-                    self.obj.login()
+                    #-------------------------------------------------------------------------------------------------|
+                    self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)#        | --- selenium starts 
+                    self.obj.login()#                                                                                 |
+                    #-------------------------------------------------------------------------------------------------|
+                    if self.go_on:
+                        break
+                    #-------------------------------------------------------------------------------------------------|
+                    for j in range(y,0,-1):# 
+                        if self.go_on:
+                            break                                                                            
+                        print("running meeting timer")#                                                              
+                        time.sleep(1)#                                                                                
+                        self.timeLabel.setText(str(j))#                                                               |--- displays meeting duration and quits on completion 
+                        if j == 1:#
+                            print("THE END")                                                                               
+                            self.stop_worker()                                                                             
+                    #-------------------------------------------------------------------------------------------------|
 
-                    for j in range(y,0,-1):
-                        print("starting meeting timer")
-                        time.sleep(1)
-                        self.timeLabel.setText(str(j))
-                        if j == 1:
-                            self.stop()
-            if stop(): 
-                break
 
+    def start_worker(self):
+        self.go_on = False
+        self.worker = Worker(self.start_stream, )
+        self.threadpool.start(self.worker)
 
-
-    def start(self):
-        """
-        docstring
-        """
-        self.t = Thread(target=self._countdown,args =(lambda : self.stop_threads, )) # ---- threading
-        self.t.start() # ---- threading
-
-    def stop(self):
-        """
-        docstring
-        """
-        #TODO here rather then stoping the thread we want to pause the thread instead and kill the thread only when we kill the application 
-
-        # self.stop_threads = True
-        
-
+    def stop_worker(self):
+        self.go_on=True
+        with self.q.mutex:
+            self.q.queue.clear()
+            self.timeLabel.setText('welcome to LazyMeet')
         try:
             self.obj.logout()
-            self.timeLabel.setText('welcome to LazyMeet')
-        except:
+            
+        except Exception as e:
+            print("ERROR: ",e)
             pass
-          
+		#self.timer.stop()
+
+    def start_stream(self):
+            
+            self.guiDisplay()
+
+
+    
+
+
+
+
+    #----------------------------------------------------------------------------------------------------------------------    
     def test(self):
         """
         docstring
@@ -124,6 +155,7 @@ class MyApp(QMainWindow):
         ''' 
         d=_date.split("-")
         return QDate(int(d[0]),int(d[1]),int(d[2]))
+
     def timeTOQtime(self,_time):
         '''
         takes time of type str eg.04:03:00 and return Qtime(04,03,00)
@@ -151,8 +183,10 @@ class MyApp(QMainWindow):
         #---update variables 
         self.cookie_directory = self.config["UserConfig"]['cookiedirectory']
         self.meeting_link= self.config["UserConfig"]['googlemeetlink']
-
-        
+        #--update Delta timings
+        self.meetingduration = int(self.config["timings"]["meetingduration"])
+        self.timetilmeet = int(self.config["timings"]["timetilmeet"])
+        self.timeLabel.setText('welcome to LazyMeet')
 
     def onApply(self):
         '''
@@ -210,7 +244,18 @@ class MyApp(QMainWindow):
         except:
             pass
 
- 
+class Worker(QtCore.QRunnable):
+
+	def __init__(self, function, *args, **kwargs):
+		super(Worker, self).__init__()
+		self.function = function
+		self.args = args
+		self.kwargs = kwargs
+
+	@pyqtSlot()
+	def run(self):
+
+		self.function(*self.args, **self.kwargs)	
 
  
  
