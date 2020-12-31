@@ -106,6 +106,7 @@ class MyApp(QMainWindow):
                         time.sleep(1)#                                                                                
                         self.timeLabel.setText(str(j))#                                                               |--- displays meeting duration and quits on completion 
                         if j == 1:#
+                            self.timeLabel.setText('welcome to LazyMeet')
                             print("THE END")                                                                               
                             self.stop_worker()                                                                             
                     #-------------------------------------------------------------------------------------------------|
@@ -151,11 +152,19 @@ class MyApp(QMainWindow):
         """
         docstring
         """
-        self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
-        self.obj.login()
-        time.sleep(2)
-        self.stop()
-        pass    
+        close = QMessageBox.information(self,
+                                    "hey!",
+                                    "are you sure Chrome browser is closed before starting this app?",
+                                    QMessageBox.Yes | QMessageBox.No)
+        if close == QMessageBox.Yes:
+            
+            self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
+            self.obj.login()
+            time.sleep(2)
+            self.stop_worker()
+        else:
+            
+            pass    
 
     def dateToQdate(self,_date):
         '''
@@ -266,12 +275,26 @@ class Worker(QtCore.QRunnable):
 		self.function(*self.args, **self.kwargs)	
 
  
- 
+StyleSheet = """
+QPushButton{
+	background-color: #C1C6DD;
+}
+QWidget#tab_2{
+image: url(lazymeet.ico);
+}
+QLabel#timelabel{font: 25 14pt "Segoe UI Light";
+	background-color: #515570;
+    color: #FFD8C9;
+}
+
+"""
  
  
  
 #-----x----------x-----------x----------
 app = QApplication(sys.argv)
+app.setStyleSheet(StyleSheet);
+app.setWindowIcon(QtGui.QIcon('lazymeet.ico'))
 window = MyApp()
 window.show()
 sys.exit(app.exec_())

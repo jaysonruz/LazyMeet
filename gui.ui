@@ -6,27 +6,67 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>284</height>
+    <width>349</width>
+    <height>245</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>349</width>
+    <height>245</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>349</width>
+    <height>245</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>LazyMeet</string>
   </property>
   <property name="autoFillBackground">
-   <bool>true</bool>
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="minimumSize">
+    <size>
+     <width>349</width>
+     <height>245</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>349</width>
+     <height>245</height>
+    </size>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="autoFillBackground">
        <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -53,6 +93,9 @@
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>TEST</string>
           </property>
@@ -69,6 +112,9 @@
         </item>
         <item row="1" column="0">
          <widget class="QPushButton" name="pushButton_Start">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Start</string>
           </property>
@@ -76,6 +122,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="pushButton_Stop">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Stop</string>
           </property>
@@ -85,14 +134,20 @@
          <widget class="QLabel" name="timelabel">
           <property name="font">
            <font>
-            <family>Rockwell Condensed</family>
-            <pointsize>25</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
+            <family>Segoe UI Light</family>
+            <pointsize>12</pointsize>
+            <weight>3</weight>
+            <italic>false</italic>
+            <bold>false</bold>
            </font>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: 25 12pt &quot;Segoe UI Light&quot;;
+
+</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::WinPanel</enum>
@@ -126,18 +181,36 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>v:0.1(JZ)</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <attribute name="title">
         <string>Settings</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
         <item row="7" column="0">
-         <widget class="QTimeEdit" name="timeEdit_Start"/>
+         <widget class="QTimeEdit" name="timeEdit_Start">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+         </widget>
         </item>
         <item row="8" column="1">
          <widget class="QPushButton" name="pushButton_Apply">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Apply</string>
           </property>
@@ -148,6 +221,10 @@
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
           <property name="text">
            <string>Enter Chrome Cookie directory..</string>
           </property>
@@ -155,13 +232,21 @@
         </item>
         <item row="2" column="0" colspan="3">
          <widget class="QLineEdit" name="lineEdit_meetingLink">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
           <property name="text">
-           <string>Enter Google Meet , Meeting link here</string>
+           <string>Enter meeting link here</string>
           </property>
          </widget>
         </item>
         <item row="5" column="0">
          <widget class="QDateEdit" name="dateEdit">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
           <property name="calendarPopup">
            <bool>true</bool>
           </property>
@@ -169,6 +254,9 @@
         </item>
         <item row="8" column="2">
          <widget class="QPushButton" name="pushButton_Reset">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Reset to Defaults</string>
           </property>
@@ -176,13 +264,21 @@
         </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="pushButton_Browse">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Browse</string>
           </property>
          </widget>
         </item>
         <item row="7" column="2">
-         <widget class="QTimeEdit" name="timeEdit_End"/>
+         <widget class="QTimeEdit" name="timeEdit_End">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+         </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label">
@@ -211,8 +307,9 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>
