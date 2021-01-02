@@ -10,6 +10,7 @@ import queue
 from threading import Thread , Condition# ---- threading
 import time
 from backports import configparser
+# from concurrent.futures import ThreadPoolExecutor
 
 from configManager import ConfigManager
 from googleMeetBot import meet_bot
@@ -63,6 +64,11 @@ class MyApp(QMainWindow):
         self.worker = None
         self.go_on = False
     ##-----------------------------------------------------------------------------------------------------------
+    # def run_io_tasks_in_parallel(self,tasks):
+    #     with ThreadPoolExecutor() as executor:
+    #         running_tasks = [executor.submit(task) for task in tasks]
+    #         for running_task in running_tasks:
+    #             running_task.result()
 
     def guiDisplay(self):
         
@@ -101,13 +107,20 @@ class MyApp(QMainWindow):
                     #-------------------------------------------------------------------------------------------------|
                     
                     for j in range(y,0,-1):# 
-
+                        print(j,y/2,j%2)
                         if (self.checkbox1.isChecked() and  (j < y/2)): # if checked and past time it will check if ppl are less then threshold 
-                            try :
-                                print(self.obj.check_folks_joined())
-                            except Exception as e:
-                                print("ERROR: ",e)
-                                pass
+                            if j%2 == 0:
+                                try :
+                                    ppl = self.obj.check_folks_joined()
+                                    print(ppl)
+                                    if int(ppl) < int(self.spinbox1.value()):
+                                        self.stop_worker() 
+                                    if j > 20 :
+                                        j-=20 
+                                except Exception as e:
+                                    print("ERROR: ",e)
+                                    pass
+                            
                             # if int(self.obj.check_folks_joined()) <  int(self.spinbox1.value()):
                             #     print("kam log hai , nikalte hai !")
                             print('its {} checking if number of ppl joined are less then {}'.format(j,self.spinbox1.value()))
@@ -115,7 +128,7 @@ class MyApp(QMainWindow):
                         if self.go_on:
                             self.timeLabel.setText('welcome to LazyMeet')
                             break                                                                            
-                        print("running meeting timer")#                                                              
+                        # print("running meeting timer")#                                                              
                         time.sleep(1)#                                                                                
                         self.timeLabel.setText(str(j))#                                                               |--- displays meeting duration and quits on completion 
                         if j == 1:#
