@@ -118,7 +118,7 @@ class meet_bot:
 
 if __name__ == "__main__":
     
-    obj = meet_bot(cookie_directory= "C:\\Users\\evilr\\AppData\\Local\\Google\\Chrome\\User Data",gmeet_link='https://meet.google.com/hta-tcvs-aid')
+    obj = meet_bot(cookie_directory= "C:\\Users\\USERNAME\\AppData\\Local\\Google\\Chrome\\User Data",gmeet_link='https://meet.google.com/adadasd')
 
     obj.login()
 
