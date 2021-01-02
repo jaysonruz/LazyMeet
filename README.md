@@ -1,4 +1,4 @@
-LazyMeet
+LazyMeet ( automates google meetings )
 
 ###########
 #IMPORTANT#
