@@ -69,7 +69,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -198,24 +198,6 @@
         <string>Settings</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="7" column="0">
-         <widget class="QTimeEdit" name="timeEdit_Start">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QPushButton" name="pushButton_Apply">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Apply</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0" colspan="2">
          <widget class="QLineEdit" name="lineEdit_cookieDirectory">
           <property name="autoFillBackground">
@@ -230,38 +212,6 @@ background-color: rgb(221, 221, 221);</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="3">
-         <widget class="QLineEdit" name="lineEdit_meetingLink">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-          <property name="text">
-           <string>Enter meeting link here</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QDateEdit" name="dateEdit">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-          <property name="calendarPopup">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="2">
-         <widget class="QPushButton" name="pushButton_Reset">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Reset to Defaults</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="pushButton_Browse">
           <property name="styleSheet">
@@ -272,7 +222,67 @@ background-color: rgb(221, 221, 221);</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="1" column="0" colspan="2">
+         <widget class="QLineEdit" name="lineEdit_meetingLink">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+          <property name="text">
+           <string>Enter meeting link here</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Select Date</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QDateEdit" name="dateEdit">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Select Start Time</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Select End Time</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QTimeEdit" name="timeEdit_Start">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
          <widget class="QTimeEdit" name="timeEdit_End">
           <property name="styleSheet">
            <string notr="true">
@@ -280,24 +290,55 @@ background-color: rgb(221, 221, 221);</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Select Date</string>
+        <item row="6" column="1">
+         <widget class="QPushButton" name="pushButton_Apply">
+          <property name="styleSheet">
+           <string notr="true"/>
           </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Select Start Time</string>
+           <string>Apply</string>
           </property>
          </widget>
         </item>
         <item row="6" column="2">
-         <widget class="QLabel" name="label_3">
+         <widget class="QPushButton" name="pushButton_Reset">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
-           <string>Select End Time</string>
+           <string>Reset to Defaults</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>Enable</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBox">
+            <property name="styleSheet">
+             <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Min threshold</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
