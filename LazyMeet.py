@@ -76,11 +76,12 @@ class MyApp(QMainWindow):
             time.sleep(5)  
             self.stop_worker()
 
+        print("starting countdown")#                                                                                 | starts countdown 
         for i in range(x,0,-1):
             if self.go_on:
                 self.timeLabel.setText('welcome to LazyMeet')
                 break
-            print("starting countdown")#                                                                              | starts countdown 
+                                                                                         
             print(i)
             time.sleep(1)
             self.timeLabel.setText("Time Remaining: "+str(i))
@@ -98,7 +99,19 @@ class MyApp(QMainWindow):
                         self.timeLabel.setText('welcome to LazyMeet')
                         break
                     #-------------------------------------------------------------------------------------------------|
+                    
                     for j in range(y,0,-1):# 
+
+                        if (self.checkbox1.isChecked() and  (j < y/2)): # if checked and past time it will check if ppl are less then threshold 
+                            try :
+                                print(self.obj.check_folks_joined())
+                            except Exception as e:
+                                print("ERROR: ",e)
+                                pass
+                            # if int(self.obj.check_folks_joined()) <  int(self.spinbox1.value()):
+                            #     print("kam log hai , nikalte hai !")
+                            print('its {} checking if number of ppl joined are less then {}'.format(j,self.spinbox1.value()))
+                            
                         if self.go_on:
                             self.timeLabel.setText('welcome to LazyMeet')
                             break                                                                            
@@ -184,6 +197,7 @@ class MyApp(QMainWindow):
         #####
         #Loads userconfig from file if it is available 
         #####
+        
         self.config.read('config.ini')
         #----defining interface
         self.lineEdit_cookieDirectory = self.findChild(QLineEdit,"lineEdit_cookieDirectory")
@@ -191,12 +205,25 @@ class MyApp(QMainWindow):
         self.DateEdit = self.findChild(QDateEdit,"dateEdit")
         self.timeEdit_Start = self.findChild(QTimeEdit,"timeEdit_Start")
         self.timeEdit_End = self.findChild(QTimeEdit,"timeEdit_End")
+        self.checkbox1 = self.findChild(QCheckBox,"checkBox1")
+        self.spinbox1 = self.findChild(QSpinBox,"spinBox1")
+        
+        print('configs : defining interface succesful')
         #----update interface
         self.lineEdit_cookieDirectory.setText(self.config["UserConfig"]["cookiedirectory"])
         self.lineEdit_meetingLink.setText(self.config["UserConfig"]["googlemeetlink"])
         self.DateEdit.setDate(self.dateToQdate(self.config["UserConfig"]['date']))
         self.timeEdit_Start.setTime(self.timeTOQtime(self.config["UserConfig"]['starttime']))
         self.timeEdit_End.setTime(self.timeTOQtime(self.config["UserConfig"]['endtime']))
+        
+        if self.config['UserConfig']['minthreshold_ischecked'] == "True":
+            self.checkbox1.setChecked(True)
+            
+        else:
+            self.checkbox1.setChecked(False)
+        self.spinbox1.setValue(int(self.config['UserConfig']['minthreshold_value']))
+
+        print('configs : updating interface succesful')
         #---update variables 
         self.cookie_directory = self.config["UserConfig"]['cookiedirectory']
         self.meeting_link= self.config["UserConfig"]['googlemeetlink']
@@ -204,13 +231,16 @@ class MyApp(QMainWindow):
         self.meetingduration = int(self.config["timings"]["meetingduration"])
         self.timetilmeet = int(self.config["timings"]["timetilmeet"])
         self.timeLabel.setText('welcome to LazyMeet')
-
+        
+        print('configs : updating variables succesful')
     def onApply(self):
         '''
         creates dictionary of values that user has provided and writes to config file using configmanager
         '''
+
         d = {'CookieDirectory': self.lineEdit_cookieDirectory.text(),'GoogleMeetLink': self.lineEdit_meetingLink.text(),'Date':self.DateEdit.date().toPyDate(),
-            'startTime':self.timeEdit_Start.time().toString(),'endTime':self.timeEdit_End.time().toString()}
+            'startTime':self.timeEdit_Start.time().toString(),'endTime':self.timeEdit_End.time().toString(),
+            'minThreshold_ischecked': str(self.checkbox1.isChecked()),'minThreshold_value':self.spinbox1.value()}
         
         self.configManager.setUserconfig(d)
         self.configManager.setDeltaTime()

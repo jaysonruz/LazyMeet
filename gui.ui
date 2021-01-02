@@ -313,14 +313,14 @@ background-color: rgb(221, 221, 221);</string>
         <item row="3" column="2">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="checkBox1">
             <property name="text">
              <string>Enable</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox">
+           <widget class="QSpinBox" name="spinBox1">
             <property name="styleSheet">
              <string notr="true">
 background-color: rgb(221, 221, 221);</string>
@@ -330,7 +330,7 @@ background-color: rgb(221, 221, 221);</string>
          </layout>
         </item>
         <item row="2" column="2">
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="label_minThreshold">
           <property name="text">
            <string>Min threshold</string>
           </property>

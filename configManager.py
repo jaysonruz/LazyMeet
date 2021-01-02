@@ -21,7 +21,7 @@ class ConfigManager:
 
     def setDeltaTime(self):
         self.config["timings"] = {'meetingDuration':str(self.deltaMeetingTime()),'timeTilMeet':str(self.deltaTime()[1])}
-        print(self.deltaMeetingTime(),self.deltaTime()[1])
+        print("debug : meeting duration  is {} and meeting would start in {} seconds".format(self.deltaMeetingTime(),self.deltaTime()[1]))
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)
     #=----------------------

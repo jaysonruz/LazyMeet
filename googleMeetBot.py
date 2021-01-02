@@ -49,7 +49,7 @@ class meet_bot:
         #optional
         self.xpath_check_time = "/html/body/div[1]/c-wiz/div[1]/div/div[8]/div[3]/div[6]/div[3]/div/div[2]/span"
         self.xpath_check_ppljoined = "/html/body/div[1]/c-wiz/div[1]/div/div[8]/div[3]/div[6]/div[3]/div/div[2]/div[1]/span/span/div/div/span[2]"
-        
+                                     
         #----------
         
         
@@ -110,24 +110,25 @@ class meet_bot:
         time.sleep(20)
         #check ppl joined
         ppl_joined = bot.find_element_by_xpath(self.xpath_check_ppljoined)
-        print(ppl_joined.text)
-
+        # print(ppl_joined.text)
+        return ppl_joined.text
 
 # In[35]:
 
 
 if __name__ == "__main__":
     
-    obj = meet_bot(cookie_directory= "C:\\Users\\%USERNAME%\\AppData\\Local\\Google\\Chrome\\User Data",gmeet_link='https://meet.google.com/')
+    obj = meet_bot(cookie_directory= "C:\\Users\\evilr\\AppData\\Local\\Google\\Chrome\\User Data",gmeet_link='https://meet.google.com/hta-tcvs-aid')
 
     obj.login()
 
     obj.check_folks_joined()
 
     time.sleep(5)
-    obj.check_time()
-    time.sleep(10)
-    obj.logout()
+    # obj.check_time()
+    obj.check_folks_joined()
+    time.sleep(5)
+    # obj.logout()
 
 
 # In[ ]:
