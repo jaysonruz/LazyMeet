@@ -49,7 +49,8 @@ class meet_bot:
         #optional
         self.xpath_check_time = "/html/body/div[1]/c-wiz/div[1]/div/div[8]/div[3]/div[6]/div[3]/div/div[2]/span"
         self.xpath_check_ppljoined = "/html/body/div[1]/c-wiz/div[1]/div/div[8]/div[3]/div[6]/div[3]/div/div[2]/div[1]/span/span/div/div/span[2]"
-                                     
+        #
+        self.xpath_switch_account = '/html/body/div[1]/c-wiz/div/div/div[8]/div[3]/div/div/div[1]/div[2]/div/div/a'                        
         #----------
         
         
@@ -64,25 +65,28 @@ class meet_bot:
             print("[-] 1. Please close all your chrome browser before opening the program")
             print("[-] 2. Please update the chromedriver.exe in the webdriver folder according to your chrome version:https://chromedriver.chromium.org/downloads")
     
-    def login(self):
+    def login(self,acc_email):
         bot=self.bot
-        
         #join meeting
         bot.get(self.meeting_link)
         time.sleep(2)
-        
+        #switch account
+        switch = bot.find_element_by_xpath(self.xpath_switch_account)
+        switch.click()
+        time.sleep(1)
+        acc = bot.find_element_by_xpath("//*[contains(text(), '{}')]".format(acc_email)) 
+        acc.click()
+        time.sleep(1)
         #disable mic
-        time.sleep(2)
+        time.sleep(1)
         mic_btn = bot.find_element_by_xpath(self.xpath_mic_button)
         time.sleep(2)
         mic_btn.click()
-        
         time.sleep(2)
         #disable video
         video_btn = bot.find_element_by_xpath(self.xpath_video_button)
         time.sleep(1)
         video_btn.click()
-        
         time.sleep(2)
         #join meet
         join_now = bot.find_element_by_xpath(self.xpath_join_now)
@@ -100,34 +104,52 @@ class meet_bot:
         
     def check_time(self):
         bot=self.bot
-        time.sleep(20)
+        time.sleep(1)
         #check Time
         Time_on_meet = bot.find_element_by_xpath(self.xpath_check_time)
         print(Time_on_meet.text)
         
     def check_folks_joined(self):
         bot=self.bot
-        time.sleep(20)
+        time.sleep(1)
         #check ppl joined
         ppl_joined = bot.find_element_by_xpath(self.xpath_check_ppljoined)
         # print(ppl_joined.text)
         return ppl_joined.text
+
+    # def switch_account(self,acc_email):
+
+
+    #     # bot = self.bot
+    #     # time.sleep(1)
+    #     # #join meeting
+    #     # bot.get(self.meeting_link)
+    #     # time.sleep(2)
+    #     # #switch account
+    #     switch = bot.find_element_by_xpath(self.xpath_switch_account)
+    #     switch.click()
+        
+    #     acc = bot.find_element_by_xpath("//*[contains(text(), '{}')]".format(acc_email)) 
+    #     acc.click()
+
+
+    #     time.sleep(50)
 
 # In[35]:
 
 
 if __name__ == "__main__":
     
-    obj = meet_bot(cookie_directory= "C:\\Users\\USERNAME\\AppData\\Local\\Google\\Chrome\\User Data",gmeet_link='https://meet.google.com/adadasd')
+    obj = meet_bot(cookie_directory= "C:\\Users\\evilr\\AppData\\Local\\Google\\Chrome\\User Data",gmeet_link='https://meet.google.com/')
 
-    obj.login()
+    # obj.login()
 
-    obj.check_folks_joined()
+    # obj.check_folks_joined()
 
-    time.sleep(5)
-    # obj.check_time()
-    obj.check_folks_joined()
-    time.sleep(5)
+    # time.sleep(5)
+    # # obj.check_time()
+    # obj.check_folks_joined()
+    # time.sleep(5)
     # obj.logout()
 
 

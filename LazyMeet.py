@@ -99,7 +99,7 @@ class MyApp(QMainWindow):
 
                     #-------------------------------------------------------------------------------------------------|
                     self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)#        | --- selenium starts 
-                    self.obj.login()#                                                                                 |
+                    self.obj.login(self.AccountId)#                                                                                 |
                     #-------------------------------------------------------------------------------------------------|
                     if self.go_on:
                         self.timeLabel.setText('welcome to LazyMeet')
@@ -185,7 +185,7 @@ class MyApp(QMainWindow):
         if close == QMessageBox.Yes:
             
             self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
-            self.obj.login()
+            self.obj.login(self.AccountId)
             time.sleep(2)
             self.stop_worker()
         else:
@@ -213,6 +213,7 @@ class MyApp(QMainWindow):
         
         self.config.read('config.ini')
         #----defining interface
+        self.lineEdit_accountId = self.findChild(QLineEdit,"lineEdit_account_email")
         self.lineEdit_cookieDirectory = self.findChild(QLineEdit,"lineEdit_cookieDirectory")
         self.lineEdit_meetingLink = self.findChild(QLineEdit,"lineEdit_meetingLink")
         self.DateEdit = self.findChild(QDateEdit,"dateEdit")
@@ -223,6 +224,7 @@ class MyApp(QMainWindow):
         
         print('configs : defining interface succesful')
         #----update interface
+        self.lineEdit_accountId.setText(self.config["UserConfig"]['AccountId'])
         self.lineEdit_cookieDirectory.setText(self.config["UserConfig"]["cookiedirectory"])
         self.lineEdit_meetingLink.setText(self.config["UserConfig"]["googlemeetlink"])
         self.DateEdit.setDate(self.dateToQdate(self.config["UserConfig"]['date']))
@@ -238,6 +240,7 @@ class MyApp(QMainWindow):
 
         print('configs : updating interface succesful')
         #---update variables 
+        self.AccountId = self.config["UserConfig"]['AccountId']
         self.cookie_directory = self.config["UserConfig"]['cookiedirectory']
         self.meeting_link= self.config["UserConfig"]['googlemeetlink']
         #--update Delta timings
@@ -251,7 +254,7 @@ class MyApp(QMainWindow):
         creates dictionary of values that user has provided and writes to config file using configmanager
         '''
 
-        d = {'CookieDirectory': self.lineEdit_cookieDirectory.text(),'GoogleMeetLink': self.lineEdit_meetingLink.text(),'Date':self.DateEdit.date().toPyDate(),
+        d = {'AccountId': self.lineEdit_accountId.text(),'CookieDirectory': self.lineEdit_cookieDirectory.text(),'GoogleMeetLink': self.lineEdit_meetingLink.text(),'Date':self.DateEdit.date().toPyDate(),
             'startTime':self.timeEdit_Start.time().toString(),'endTime':self.timeEdit_End.time().toString(),
             'minThreshold_ischecked': str(self.checkbox1.isChecked()),'minThreshold_value':self.spinbox1.value()}
         

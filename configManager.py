@@ -10,7 +10,7 @@ class ConfigManager:
         
         self.config.read('config.ini')
     def resetConfig(self):
-        self.config['UserConfig'] = {'CookieDirectory': 'Enter Chrome Cookie directory..','GoogleMeetLink': 'Enter Meeting link here',}
+        self.config['UserConfig'] = {'AccountId':'youremail@gmail.com','CookieDirectory': 'Enter Chrome Cookie directory..','GoogleMeetLink': 'Enter Meeting link here',}
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)
 
