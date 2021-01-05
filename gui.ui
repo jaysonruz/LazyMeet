@@ -6,46 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>349</width>
-    <height>245</height>
+    <width>670</width>
+    <height>270</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>349</width>
-    <height>245</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>349</width>
-    <height>245</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>LazyMeet</string>
   </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="minimumSize">
-    <size>
-     <width>349</width>
-     <height>245</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>349</width>
-     <height>245</height>
-    </size>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="1">
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
        <bool>true</bool>
@@ -69,7 +42,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -190,6 +163,55 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Accounts</string>
+       </attribute>
+       <widget class="QWidget" name="">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>159</width>
+          <height>47</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Switch accounts ?</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="radioButton">
+             <property name="text">
+              <string>enable</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_account_email">
+           <property name="styleSheet">
+            <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>enter account email here</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
       <widget class="QWidget" name="tab_2">
        <property name="styleSheet">
         <string notr="true"/>
@@ -198,20 +220,6 @@
         <string>Settings</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0" colspan="2">
-         <widget class="QLineEdit" name="lineEdit_cookieDirectory">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-          <property name="text">
-           <string>Enter Chrome Cookie directory..</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="pushButton_Browse">
           <property name="styleSheet">
@@ -219,17 +227,6 @@ background-color: rgb(221, 221, 221);</string>
           </property>
           <property name="text">
            <string>Browse</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QLineEdit" name="lineEdit_meetingLink">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-          <property name="text">
-           <string>Enter meeting link here</string>
           </property>
          </widget>
         </item>
@@ -243,24 +240,13 @@ background-color: rgb(221, 221, 221);</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QDateEdit" name="dateEdit">
+        <item row="6" column="2">
+         <widget class="QPushButton" name="pushButton_Reset">
           <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
+           <string notr="true"/>
           </property>
-          <property name="calendarPopup">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Select Start Time</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+           <string>Reset to Defaults</string>
           </property>
          </widget>
         </item>
@@ -271,42 +257,6 @@ background-color: rgb(221, 221, 221);</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QTimeEdit" name="timeEdit_Start">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QTimeEdit" name="timeEdit_End">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QPushButton" name="pushButton_Apply">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Apply</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QPushButton" name="pushButton_Reset">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Reset to Defaults</string>
           </property>
          </widget>
         </item>
@@ -329,6 +279,78 @@ background-color: rgb(221, 221, 221);</string>
           </item>
          </layout>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Select Start Time</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QPushButton" name="pushButton_Apply">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>Apply</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLineEdit" name="lineEdit_meetingLink">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+          <property name="text">
+           <string>Enter meeting link here</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QDateEdit" name="dateEdit">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QTimeEdit" name="timeEdit_Start">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLineEdit" name="lineEdit_cookieDirectory">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+          <property name="text">
+           <string>Enter Chrome Cookie directory..</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QTimeEdit" name="timeEdit_End">
+          <property name="styleSheet">
+           <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="2">
          <widget class="QLabel" name="label_minThreshold">
           <property name="text">
@@ -348,9 +370,8 @@ background-color: rgb(221, 221, 221);</string>
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
