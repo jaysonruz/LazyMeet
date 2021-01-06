@@ -55,10 +55,12 @@ class meet_bot:
         
         
         options = webdriver.ChromeOptions()
+        
         path_to_chrome_cookie="user-data-dir="+self.cookie_directory
         #path_to_chrome_cookie="user-data-dir=C:\\Users\\evilr\\AppData\\Local\\Google\\Chrome\\User Data"
         print(path_to_chrome_cookie)
         options.add_argument(path_to_chrome_cookie)
+        options.add_argument('log-level=3')
         try:
             self.bot = webdriver.Chrome('./webdriver/chromedriver.exe', options=options)
         except:
@@ -100,7 +102,7 @@ class meet_bot:
         discnt_btn = bot.find_element_by_xpath(self.xpath_disconnect_button)
         time.sleep(2)
         discnt_btn.click()
-        bot.close()
+        bot.quit()
         
     def check_time(self):
         bot=self.bot
