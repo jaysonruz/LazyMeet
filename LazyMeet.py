@@ -10,7 +10,6 @@ import queue
 from threading import Thread , Condition# ---- threading
 import time
 from backports import configparser
-# from concurrent.futures import ThreadPoolExecutor
 
 from configManager import ConfigManager
 from googleMeetBot import meet_bot
@@ -19,18 +18,14 @@ class MyApp(QMainWindow):
     def __init__(self):
         super(MyApp, self).__init__()
         uic.loadUi("gui.ui", self)
-        #-------------------------------------------------------------------  
-        
+        #--------------------------------------------------
         self.threadpool = QtCore.QThreadPool()	
         self.threadpool.setMaxThreadCount(1)
         self.q = queue.Queue(maxsize=20)
-
-        #--
         self.settings = QSettings('LazyMeet','App state')
         self.configManager = ConfigManager()
         self.config = configparser.ConfigParser()
         self.timeLabel = self.findChild(QLabel,"timelabel")
-
         self.stop_threads = False  # ---- threading
         self.thread_condition = Condition()
         try:
@@ -43,32 +38,32 @@ class MyApp(QMainWindow):
         except :
             pass
         
-        ##
-        #linking apply button and reset button to their respective function
-        self.button_Apply = self.findChild(QPushButton,"pushButton_Apply")
-        self.button_Apply.clicked.connect(self.onApply)
-        self.button_reset = self.findChild(QPushButton,"pushButton_Reset")
-        self.button_reset.clicked.connect(self.onReset)
-        self.button_Browse = self.findChild(QPushButton,"pushButton_Browse")
-        self.button_Browse.clicked.connect(self.change_cookie_directory)
+        ######################
+        #linking all Buttons #
+        ######################
 
-        self.button_start = self.findChild(QPushButton,"pushButton_Start")
+        self.button_create_cookies = self.findChild(QPushButton,"pushButton_create_cookies")# Create cookie Button
+        self.button_create_cookies.clicked.connect(self.CreateCookie)
+
+        self.button_Apply = self.findChild(QPushButton,"pushButton_Apply") # Apply Button
+        self.button_Apply.clicked.connect(self.onApply)
+        self.button_reset = self.findChild(QPushButton,"pushButton_Reset") # Reset Button
+        self.button_reset.clicked.connect(self.onReset)
+
+
+        self.button_start = self.findChild(QPushButton,"pushButton_Start") # Start Button
         self.button_start.clicked.connect(self.start_worker)
         
-        self.button_stop = self.findChild(QPushButton,"pushButton_Stop")
+        self.button_stop = self.findChild(QPushButton,"pushButton_Stop")  # Stop Button
         self.button_stop.clicked.connect(self.stop_worker)
         
-        self.button_test = self.findChild(QPushButton,"pushButton_TEST")
+        self.button_test = self.findChild(QPushButton,"pushButton_TEST")  # test Button
         self.button_test.clicked.connect(self.test)
+        ## setting icon to the button 
+        # self.button_test.setIcon(QIcon('warning.png')) 
+        self.worker = None #-|custom flags
+        self.go_on = False #-|custom flags
 
-        self.worker = None
-        self.go_on = False
-    ##-----------------------------------------------------------------------------------------------------------
-    # def run_io_tasks_in_parallel(self,tasks):
-    #     with ThreadPoolExecutor() as executor:
-    #         running_tasks = [executor.submit(task) for task in tasks]
-    #         for running_task in running_tasks:
-    #             running_task.result()
 
     def guiDisplay(self):
         
@@ -98,8 +93,8 @@ class MyApp(QMainWindow):
                     self.timeLabel.setText("starting meeting")
 
                     #-------------------------------------------------------------------------------------------------|
-                    self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)#        | --- selenium starts 
-                    self.obj.login(self.AccountId)#                                                                                 |
+                    self.obj = meet_bot(gmeet_link=self.meeting_link)#        | --- selenium starts 
+                    self.obj.login()#                                                                                 |
                     #-------------------------------------------------------------------------------------------------|
                     if self.go_on:
                         self.timeLabel.setText('welcome to LazyMeet')
@@ -112,11 +107,12 @@ class MyApp(QMainWindow):
                             if j%2 == 0:
                                 try :
                                     ppl = self.obj.check_folks_joined()
-                                    print(ppl)
+                                    print(ppl) # number of ppl in meeting atm
                                     if int(ppl) < int(self.spinbox1.value()):
+                                        self.timeLabel.setText('Stopping Meeting ! {folks < MinTh} ')
                                         self.stop_worker() 
-                                    if j > 20 :
-                                        j-=20 
+                                    # if j > 20 :
+                                    #     j-=20 
                                 except Exception as e:
                                     print("ERROR: ",e)
                                     pass
@@ -130,14 +126,15 @@ class MyApp(QMainWindow):
                             break                                                                            
                         # print("running meeting timer")#                                                              
                         time.sleep(1)#                                                                                
-                        self.timeLabel.setText(str(j))#                                                               |--- displays meeting duration and quits on completion 
+                        self.timeLabel.setText("Meeting duration :"+str(j))#                                                               |--- displays meeting duration and quits on completion 
                         if j == 1:#
                             self.timeLabel.setText('welcome to LazyMeet')
                             print("THE END")                                                                               
                             self.stop_worker()                                                                             
                     #-------------------------------------------------------------------------------------------------|
 
-
+   #Multithreading at play 
+    #start button function
     def start_worker(self):
         try:
             self.onApply()
@@ -146,46 +143,34 @@ class MyApp(QMainWindow):
         self.go_on = False
         self.worker = Worker(self.start_stream, )
         self.threadpool.start(self.worker)
-
+    #stop button function
     def stop_worker(self):
-        
         self.go_on=True
         with self.q.mutex:
-            self.q.queue.clear()
-
-          
+            self.q.queue.clear()  
         try:
-            self.obj.logout()
-            
-        except Exception as e:
-            print("ERROR: ",e)
+            self.obj.logout() 
+        except :
             pass
         
-        
-
     def start_stream(self):
-            
             self.guiDisplay()
-
-
-    
-
-
-
+    #--------------------------
 
     #----------------------------------------------------------------------------------------------------------------------    
     def test(self):
         """
-        docstring
+        Test button implementation
         """
         close = QMessageBox.information(self,
                                     "hey!",
-                                    "are you sure Chrome browser is closed before starting this app?",
+                                    "note: please allow mic and video if notification pops up on meeting screen."
+                                    " \n   have you set cookies? ",
                                     QMessageBox.Yes | QMessageBox.No)
         if close == QMessageBox.Yes:
             
-            self.obj = meet_bot(cookie_directory= self.cookie_directory,gmeet_link=self.meeting_link)
-            self.obj.login(self.AccountId)
+            self.obj = meet_bot(gmeet_link=self.meeting_link)
+            self.obj.login()
             time.sleep(2)
             self.stop_worker()
         else:
@@ -213,8 +198,6 @@ class MyApp(QMainWindow):
         
         self.config.read('config.ini')
         #----defining interface
-        self.lineEdit_accountId = self.findChild(QLineEdit,"lineEdit_account_email")
-        self.lineEdit_cookieDirectory = self.findChild(QLineEdit,"lineEdit_cookieDirectory")
         self.lineEdit_meetingLink = self.findChild(QLineEdit,"lineEdit_meetingLink")
         self.DateEdit = self.findChild(QDateEdit,"dateEdit")
         self.timeEdit_Start = self.findChild(QTimeEdit,"timeEdit_Start")
@@ -224,8 +207,6 @@ class MyApp(QMainWindow):
         
         print('configs : defining interface succesful')
         #----update interface
-        self.lineEdit_accountId.setText(self.config["UserConfig"]['AccountId'])
-        self.lineEdit_cookieDirectory.setText(self.config["UserConfig"]["cookiedirectory"])
         self.lineEdit_meetingLink.setText(self.config["UserConfig"]["googlemeetlink"])
         self.DateEdit.setDate(self.dateToQdate(self.config["UserConfig"]['date']))
         self.timeEdit_Start.setTime(self.timeTOQtime(self.config["UserConfig"]['starttime']))
@@ -240,8 +221,6 @@ class MyApp(QMainWindow):
 
         print('configs : updating interface succesful')
         #---update variables 
-        self.AccountId = self.config["UserConfig"]['AccountId']
-        self.cookie_directory = self.config["UserConfig"]['cookiedirectory']
         self.meeting_link= self.config["UserConfig"]['googlemeetlink']
         #--update Delta timings
         self.meetingduration = int(self.config["timings"]["meetingduration"])
@@ -249,12 +228,22 @@ class MyApp(QMainWindow):
         self.timeLabel.setText('welcome to LazyMeet')
         
         print('configs : updating variables succesful')
+        #-----------------------------------------------
+    def CreateCookie(self):
+        '''
+        cookie button function is implemeted here 
+        '''
+        self.obj = meet_bot(gmeet_link=self.meeting_link)#        | --- selenium starts 
+        self.obj.cookiecreator()#    
+                                             
+        
+
     def onApply(self):
         '''
         creates dictionary of values that user has provided and writes to config file using configmanager
         '''
 
-        d = {'AccountId': self.lineEdit_accountId.text(),'CookieDirectory': self.lineEdit_cookieDirectory.text(),'GoogleMeetLink': self.lineEdit_meetingLink.text(),'Date':self.DateEdit.date().toPyDate(),
+        d = {'GoogleMeetLink': self.lineEdit_meetingLink.text(),'Date':self.DateEdit.date().toPyDate(),
             'startTime':self.timeEdit_Start.time().toString(),'endTime':self.timeEdit_End.time().toString(),
             'minThreshold_ischecked': str(self.checkbox1.isChecked()),'minThreshold_value':self.spinbox1.value()}
         
@@ -272,18 +261,6 @@ class MyApp(QMainWindow):
             self.updateconfig()
         except:
             pass
-
-    def change_cookie_directory(self):
-
-        try:
-            self.folder = str(QFileDialog.getExistingDirectory(None, "Select Directory",self.lineEdit_cookieDirectory.text()))
-        except:
-            self.folder = str(QFileDialog.getExistingDirectory(None, "Select Directory","c:/Users/"))
-
-        self.lineEdit_cookieDirectory = self.findChild(QLineEdit,"lineEdit_cookieDirectory")
-        self.lineEdit_cookieDirectory.setText(self.folder)
-        self.cookie_directory = self.folder
-
 
     def closeEvent(self,event):
         '''
@@ -334,9 +311,7 @@ QLabel#timelabel{font: 25 14pt "Segoe UI Light";
 }
 
 """
- 
- 
- 
+
 #-----x----------x-----------x----------
 app = QApplication(sys.argv)
 app.setStyleSheet(StyleSheet);

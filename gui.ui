@@ -13,12 +13,18 @@
   <property name="windowTitle">
    <string>LazyMeet</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+	background-color:#515570;
+	
+}</string>
+  </property>
   <property name="dockOptions">
    <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_7">
-    <item row="1" column="0">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
        <bool>true</bool>
@@ -48,57 +54,13 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>Home</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pushButton_TEST">
-          <property name="toolTip">
-           <string extracomment="check if everything is working fine"/>
-          </property>
-          <property name="toolTipDuration">
-           <number>5</number>
-          </property>
-          <property name="statusTip">
-           <string extracomment="check if everything is working fine"/>
-          </property>
-          <property name="whatsThis">
-           <string/>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>TEST</string>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton_Start">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Start</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="pushButton_Stop">
           <property name="styleSheet">
@@ -160,10 +122,13 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_4">
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pushButton_Start">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
-           <string>v:0.1(JZ)</string>
+           <string>Start</string>
           </property>
          </widget>
         </item>
@@ -176,14 +141,21 @@
        <attribute name="title">
         <string>Settings</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0" colspan="5">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QLineEdit" name="lineEdit_cookieDirectory">
-            <property name="autoFillBackground">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="pushButton_create_cookies">
+            <property name="text">
+             <string>Create Cookies</string>
+            </property>
+            <property name="flat">
              <bool>false</bool>
             </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEdit_meetingLink">
             <property name="styleSheet">
              <string notr="true">
 background-color: rgb(221, 221, 221);</string>
@@ -192,96 +164,42 @@ background-color: rgb(221, 221, 221);</string>
              <string/>
             </property>
             <property name="placeholderText">
-             <string>Enter Chrome Cookie directory..</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_Browse">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="0" column="5" rowspan="3">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>75</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="0">
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Select Date</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             <string>Enter meeting link here</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QDateEdit" name="dateEdit">
-            <property name="styleSheet">
-             <string notr="true">
-background-color: rgb(221, 221, 221);</string>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Step 2:</string>
             </property>
-            <property name="calendarPopup">
-             <bool>true</bool>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Step 1:</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
-        <item row="3" column="1" colspan="3">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>201</width>
-            <height>38</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="4" colspan="2">
+        <item row="0" column="1">
          <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0">
+          <item row="0" column="1">
            <widget class="QLabel" name="label_minThreshold">
             <property name="text">
              <string>Min threshold</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="checkBox1">
-            <property name="text">
-             <string>Enable</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
+          <item row="1" column="1">
            <widget class="QLabel" name="label_minThreshold_2">
             <property name="text">
              <string>value</string>
@@ -294,7 +212,7 @@ background-color: rgb(221, 221, 221);</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="1" column="2">
            <widget class="QSpinBox" name="spinBox1">
             <property name="styleSheet">
              <string notr="true">
@@ -302,21 +220,64 @@ background-color: rgb(221, 221, 221);</string>
             </property>
            </widget>
           </item>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="checkBox1">
+            <property name="text">
+             <string>Enable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" rowspan="2">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </item>
-        <item row="4" column="0" colspan="2">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
+        <item row="1" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="label">
             <property name="text">
-             <string>Select Start Time</string>
+             <string>Select Date</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item>
+           <widget class="QDateEdit" name="dateEdit">
+            <property name="styleSheet">
+             <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="2" column="1">
+           <widget class="QTimeEdit" name="timeEdit_End">
+            <property name="styleSheet">
+             <string notr="true">
+background-color: rgb(221, 221, 221);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QLabel" name="label_3">
             <property name="text">
              <string>Select End Time</string>
@@ -327,6 +288,16 @@ background-color: rgb(221, 221, 221);</string>
            </widget>
           </item>
           <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Select Start Time</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
            <widget class="QTimeEdit" name="timeEdit_Start">
             <property name="styleSheet">
              <string notr="true">
@@ -334,80 +305,69 @@ background-color: rgb(221, 221, 221);</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QTimeEdit" name="timeEdit_End">
-            <property name="styleSheet">
-             <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
-        <item row="4" column="2" colspan="4">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>257</width>
-            <height>38</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="3" colspan="3">
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
-           <widget class="QPushButton" name="pushButton_Apply">
+        <item row="3" column="1">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="pushButton_Apply">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>Apply</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="pushButton_Reset">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>Reset to Defaults</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_TEST">
+            <property name="toolTip">
+             <string extracomment="check if everything is working fine"/>
+            </property>
+            <property name="toolTipDuration">
+             <number>5</number>
+            </property>
+            <property name="statusTip">
+             <string extracomment="check if everything is working fine"/>
+            </property>
+            <property name="whatsThis">
+             <string/>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>Apply</string>
+             <string>TEST</string>
             </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="pushButton_Reset">
-            <property name="styleSheet">
-             <string notr="true"/>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
-            <property name="text">
-             <string>Reset to Defaults</string>
+            <property name="default">
+             <bool>false</bool>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
          </layout>
-        </item>
-        <item row="1" column="0" colspan="4">
-         <widget class="QLineEdit" name="lineEdit_account_email">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string>enter account email here</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="4">
-         <widget class="QLineEdit" name="lineEdit_meetingLink">
-          <property name="styleSheet">
-           <string notr="true">
-background-color: rgb(221, 221, 221);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string>Enter meeting link here</string>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -415,7 +375,6 @@ background-color: rgb(221, 221, 221);</string>
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

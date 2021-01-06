@@ -18,6 +18,11 @@ class ConfigManager:
         self.config['UserConfig'] = arg
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)
+            
+    def Xpathconfig(self,arg):
+        self.config['XPATHS'] = arg
+        with open('config.ini', 'w') as configfile:
+            self.config.write(configfile)
 
     def setDeltaTime(self):
         self.config["timings"] = {'meetingDuration':str(self.deltaMeetingTime()),'timeTilMeet':str(self.deltaTime()[1])}
